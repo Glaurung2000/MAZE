@@ -42,14 +42,14 @@ int main (){
 //================================================================================================================================================
 /*	for(int i = 0; i < N; i++) {
 		for(int j = 0; j < N; j++) {
-			printf("%2d", maze[i][j]);
+			printf("%3d", maze[i][j]);
 		}
 		printf("\n");
 	}
 	printf("\n");
 	for(int i = 0; i < N; i++) {
 		for(int j = 0; j < N; j++) {
-			printf("%2d", dist[i][j]);
+			printf("%3d", dist[i][j]);
 		}
 		printf("\n");
 	}
@@ -58,6 +58,7 @@ int main (){
 //==================================================================|BFS|=================================================================
 	srand(time(NULL));
 	int cur_x = 0, cur_y = 0; // Current x & y
+	dist[cur_y][cur_x] = 1;
 	int dir, popytka, sosed;
 	int ddy [4] = { -1, 0, 1, 0};
 	int ddx [4] = { 0, 1, 0, -1};
@@ -74,14 +75,15 @@ int main (){
 			popytka= popytka - 1;
 		}
 		if (dir >= 0)  {		// Если сосед действительно новый
-			maze[cur_y + ddy[dir]][cur_x + ddx[dir]] = 1; 
-			dist[new_y][new_x] = dist[cur_y][cur_x] + 1;
+			maze[cur_y + ddy[dir]][cur_x + ddx[dir]] = 1;
+			dist[cur_y + ddy[dir]][cur_x + ddx[dir]] = dist[cur_y][cur_x] + 1;
+			dist[new_y][new_x] = dist[cur_y][cur_x] + 2;
 			cur_x = new_x;
 			cur_y = new_y;
 		}
 		else {  		// Если сосед уже посещен
 			for (sosed = 0; sosed <= 3; sosed++)  {
-				if( ((new_y >= 0)&&(new_x >= 0)&&(new_y < N)&&(new_x < N)) && (dist[new_y][new_x] + 1 == dist[cur_y][cur_x]) ) dir = sosed; // Ищем именно предыдущего соседа
+				if( ((new_y >= 0)&&(new_x >= 0)&&(new_y < N)&&(new_x < N)) && (dist[new_y][new_x] + 2 == dist[cur_y][cur_x]) ) dir = sosed; // Ищем именно предыдущего соседа
 			}
 			if(dir >= 0) { // Если нашли возвращаемся в него
 				cur_x = new_x;
@@ -90,31 +92,125 @@ int main (){
 		}
 		
 	}
-//=========================================| Добавляем рандомную хрень чтобы путь был не очевиден |=======================================
-	
-	/*for(int i = 2; i < N; i+=2) {
-		for(int j = 2; j < N; j+=2) {
-			if
-		}
-	}*/
-	
-//========================================================================================================================================
-	
-	for(int i = 0; i < N; i++) {
+/*	for(int i = 0; i < N; i++) {
 		for(int j = 0; j < N; j++) {
-			printf("%2d", maze[i][j]);
+			printf("%4d", maze[i][j]);
 		}
 		printf("\n");
 	}
 	printf("\n");
 	for(int i = 0; i < N; i++) {
 		for(int j = 0; j < N; j++) {
-			printf("%2d", dist[i][j]);
+			printf("%4d", dist[i][j]);
+		}
+		printf("\n");
+	}
+	system("pause");*/
+//=========================================| Добавляем рандомную хрень чтобы путь был не очевиден |=======================================
+	int w_m = N*N*10; // ways_multiplicator
+	for(int i = 0; i < N; i+=2) {
+		for(int j = 0; j < N; j+=2) {
+			if (dist[i][j] == -1){
+				int deeper = 4;
+				while(deeper > 0) {
+					cur_y = i;
+					cur_x = j;
+					dist[cur_y][cur_x] = 1*w_m;	
+					dir=  -1; 		//???
+					popytka = 4; 	//???
+					int new_x;
+					int new_y;
+					while((dir < 0)&&(popytka > 0)) {
+						sosed = rand()%4;		// Ищем рандомного соседа 
+						new_x = cur_x + ddx[sosed]*2;
+						new_y = cur_y + ddy[sosed]*2;
+						if( ((new_y >= 0)&&(new_x >= 0)&&(new_y < N)&&(new_x < N)) && (dist[new_y][new_x] == -1) ) dir = sosed; // Проверяем что там еще не были
+						popytka= popytka - 1;
+					}
+					if (dir < 0) {
+						for (sosed = 0; sosed <= 3; sosed++)  {
+							if( ((new_y >= 0)&&(new_x >= 0)&&(new_y < N)&&(new_x < N)) && (dist[new_y][new_x] == -1) ) dir = sosed; // Ищем именно предыдущего соседа
+						}
+					}
+					if (dir >= 0)  {		// Если сосед действительно новый
+						maze[cur_y + ddy[dir]][cur_x + ddx[dir]] = 1;
+						dist[cur_y + ddy[dir]][cur_x + ddx[dir]] = dist[cur_y][cur_x] + 1;
+						dist[new_y][new_x] = dist[cur_y][cur_x] + 2;
+						cur_x = new_x;
+						cur_y = new_y;
+					}
+					else {  		// Если сосед уже посещен
+						deeper--;
+						for (sosed = 0; sosed <= 3; sosed++)  {
+							if( ((new_y >= 0)&&(new_x >= 0)&&(new_y < N)&&(new_x < N)) && (dist[new_y][new_x] + 2 == dist[cur_y][cur_x]) ) dir = sosed; // Ищем именно предыдущего соседа
+						}
+						if(dir >= 0) { // Если нашли возвращаемся в него
+							cur_x = new_x;
+							cur_y = new_y;
+						}
+					}
+				}
+			}
+		}
+	}
+	for (int h = 0; h < 100; h++) {
+		for(int i = 0; i < N; i+=2) {
+			for(int j = 0; j < N; j+=2) {
+				if((i % 2 == 0)&&(j % 2 == 0)){
+					int new_x;
+					int new_y;
+					dir=  -1;
+					for(int k = 0; k < 50;) {
+						sosed = rand()%4;
+						//printf("%d\n", sosed);
+						new_x = cur_x + ddx[sosed]*2;
+						new_y = cur_y + ddy[sosed]*2;
+						if (((new_y >= 0)&&(new_x >= 0)&&(new_y < N)&&(new_x < N)) && (dist[new_y][new_x] > N*N)) dir = sosed;
+						if (dir >=0) {
+							maze[cur_y + ddy[dir]][cur_x + ddx[dir]] = 1;
+							cur_x = new_x;
+							cur_y = new_y;
+							k+=10;
+						}
+						k++;
+						
+					}
+					if (dir < 0) {
+						for (sosed = 3; sosed > 0; sosed-=1){
+							new_x = cur_x + ddx[sosed]*2;
+							new_y = cur_y + ddy[sosed]*2;
+							if (((new_y >= 0)&&(new_x >= 0)&&(new_y < N)&&(new_x < N)) && (dist[new_y][new_x] > N*N)) dir = sosed;
+							if (dir >=0) {
+								maze[cur_y + ddy[dir]][cur_x + ddx[dir]] = 1;
+								cur_x = new_x;
+								cur_y = new_y;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	
+//========================================================================================================================================
+	
+/*	for(int i = 0; i < N; i++) {
+		for(int j = 0; j < N; j++) {
+			printf("%5d", maze[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");*/
+/*	for(int i = 0; i < N; i++) {
+		for(int j = 0; j < N; j++) {
+			printf("%5d", dist[i][j]);
 		}
 		printf("\n");
 	}
 	system("pause");
-	printf("\n");
+	printf("\n");*/
 	for(int i = 0; i < N; i++) {
 		for(int j = 0; j < N; j++) {
 			if (maze[i][j] == 0) printf("%c", 219);
@@ -130,7 +226,7 @@ int main (){
 			printf("%1d", maze[i][j]);
 		}
 		printf("\n");
-	}*/
+	}*/	
    return 0;
 }
 /**/

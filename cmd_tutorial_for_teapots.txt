@@ -1,3 +1,7 @@
 Creat: main.c mylib.c mylib.h
 cmd comand:gcc -o main.exe mylib.c main.c
 cmd comand:main.exe
+
+
+cd C:\Users\ArinAdmin\Documents\GitKrakenTestRepo\MAZE
+gcc -o tmp.exe tester.c
