@@ -1,23 +1,22 @@
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+
 #include "labirinth.h"
 
 int X, Y;
 int fX, FY; // finish
 int N, M;
-int matrix[n]; // тут строка 20
-
-void crceate_fild(int n = 1, int m = 1){
-
-	printf("Maze size:");
-	scanf ("%d",&N);
+//int matrix[n]; // тут строка 20
+int **MAZE;
+void crceate_fild(int n){
+	system("cls");
+	//time_t THE_time;
+	srand(time(NULL));
+	//int start_time = THE_time;
+	N=n;
 	printf("Maze size:%d", N);
-	printf("x%d", N);
-	printf("\n");
+	printf("x%d\n", N);
+	//printf("\n");
 	
-	int **maze = (int **)malloc(N*sizeof(int *)); // Я хз как сделать его глобальным...
+	int **maze = (int **)malloc(N*sizeof(int *));
 	int **dist = (int **)malloc(N*sizeof(int *));
 	for(int i = 0; i < N; i++) {
 		maze[i] = (int *)malloc(N*sizeof(int));
@@ -33,13 +32,17 @@ void crceate_fild(int n = 1, int m = 1){
 		}
 	}
 //==================================================================|BFS|=================================================================
-	srand(time(NULL));
+
 	int cur_x = 0, cur_y = 0; // Current x & y
 	dist[cur_y][cur_x] = 1;
 	int dir, popytka, sosed;
 	int ddy [4] = { -1, 0, 1, 0};
 	int ddx [4] = { 0, 1, 0, -1};
 	while(dist[N-1][N-1] == -1)  {
+		/*if (THE_time - start_time > 3) {
+			printf("ERROR: timeout exception\n");
+			return 0;
+		}*/	
 		dir=  -1; 		//???
 		popytka = 8; 	//???
 		int new_x;
@@ -152,6 +155,7 @@ void crceate_fild(int n = 1, int m = 1){
 				}
 			}
 		}
+		MAZE = maze;
 	}
 	
 	
@@ -166,11 +170,12 @@ void crceate_fild(int n = 1, int m = 1){
 	}
 	system("pause");
 //=============================================================================================================================	
-   return 0;
+
 }
-bool is_finish(int x = X, int y = Y){
-	std::cout << "TODO: is_finish\n";
+bool is_finish(int x, int y){
+	printf("TODO: is_finish\n");
+	return 0;
 }
-void move(int x = X, int y = Y, int direction = 0){ // direction 0 - down, 1 - up, 2 - left, 3 - right
-	std::cout << "TODO: move\n";
+void move(int x, int y, int direction){ // direction 0 - down, 1 - up, 2 - left, 3 - right
+	printf("TODO: move\n");
 }

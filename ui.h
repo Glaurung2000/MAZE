@@ -1,5 +1,6 @@
-void drow_star_menu();
+#include <stdio.h>
+#include <stdlib.h>
 
-void drow_game_fild();
+void main_menu();	
 
-void drow_finish_menu();
+void instuction();	

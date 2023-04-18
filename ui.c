@@ -1,14 +1,18 @@
 #include "ui.h"
-#include <iostream>
 
-// Maybe some varibales
 
-void drow_star_menu(){
-	std::cout << "TODO: drow_star_menu\n";
-}
-void drow_game_fild(){
-	std::cout << "TODO: drow_game_fild\n";
-}
-void drow_finish_menu(){
-	std::cout << "TODO: drow_finish_menu\n";
+void main_menu(){	 	// В ui.c
+	system("cls");
+	printf("Main menu:\n");
+    printf("1. Start game\n");
+    printf("2. Instructions\n");
+    printf("3. Exit\n");
+}	
+
+void instuction() {		// В ui.c
+	system("cls");
+	printf("Instructions:\n");
+	printf("The goal of the game is to find your way out of the maze.\n");
+	printf("You can move up, down, left, or right by using buttons: 'a', 'w', 's', 'd'.\n");
+	printf("Press 'M' to return to main menu.\n\n");
 }
